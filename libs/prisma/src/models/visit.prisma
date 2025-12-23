@@ -1,0 +1,23 @@
+model Visit {
+  id        String   @id @default(uuid())
+  ip        String // Hashed IP
+  userAgent String?
+  browser   String?
+  os        String?
+  device    String?
+  referrer  String?
+  country   String?
+  region    String?
+  city      String?
+  geo       Json?
+  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  linkId    String
+  createdAt DateTime @default(now())
+
+  @@index(linkId)
+  @@index(ip)
+  @@index(country)
+  @@index(region)
+  @@index(city)
+  @@index(createdAt)
+}

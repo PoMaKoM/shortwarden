@@ -1,0 +1,29 @@
+<header
+  class="flex items-center justify-between px-6 py-4 fixed top-0 w-full z-50 border-b">
+  <!-- Logo -->
+  <div class="flex items-center gap-2">
+    <a href="/" class="flex items-center gap-2">
+      <div class="h-6 w-6 rounded-lg flex items-center justify-center font-bold text-xs">S
+      </div>
+      <span class="text-lg font-bold tracking-tight"> TODO: logo</span>
+    </a>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center space-x-6">
+    <a href="#" class="text-sm font-medium text-secondary-foreground transition-colors">Features</a>
+    <a href="#" class="text-sm font-medium text-secondary-foreground transition-colors">Pricing</a>
+    <a href="#" class="text-sm font-medium text-secondary-foreground transition-colors">Docs</a>
+  </nav>
+
+  <!-- Right Actions -->
+  <div class="flex items-center space-x-4">
+    <button hlmBtn size="m" variant="default" (click)="openDashboard()">
+      <span>Dashboard</span>
+    </button>
+    <!-- Theme Toggle -->
+    <button hlmBtn size="icon" variant="secondary" (click)="toggleTheme()">
+      <ng-icon hlm size="sm" [name]="isDarkMode() ? 'lucideMoon': 'lucideSun'" />
+    </button>
+  </div>
+</header>

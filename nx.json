@@ -42,13 +42,33 @@
         "production",
         "^production"
       ]
+    },
+    "@nx/angular:ng-packagr-lite": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     }
   },
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "none",
       "linter": "eslint",
-      "style": "css",
+      "style": "none",
+      "unitTestRunner": "none"
+    },
+    "@nx/angular:component": {
+      "style": "none",
+      "changeDetection": "OnPush",
+      "skipTests": true,
+      "standalone": true
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
       "unitTestRunner": "none"
     }
   },

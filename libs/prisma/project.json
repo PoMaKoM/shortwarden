@@ -1,0 +1,65 @@
+{
+  "name": "prisma",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/prisma/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "generate-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma generate",
+        "cwd": "libs/prisma"
+      }
+    },
+    "migrate-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma migrate dev",
+        "cwd": "libs/prisma"
+      }
+    },
+    "migrate-deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma migrate deploy",
+        "cwd": "libs/prisma"
+      }
+    },
+    "migrate-reset": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma migrate reset",
+        "cwd": "libs/prisma"
+      }
+    },
+    "studio": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma studio",
+        "cwd": "libs/prisma"
+      }
+    },
+    "db-pull": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma db pull",
+        "cwd": "libs/prisma"
+      }
+    },
+    "db-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma db push",
+        "cwd": "libs/prisma"
+      }
+    },
+    "db-validate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma validate",
+        "cwd": "libs/prisma"
+      }
+    }
+  }
+}

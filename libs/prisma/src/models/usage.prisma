@@ -1,0 +1,13 @@
+model Usage {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @unique
+  linksCount  Int      @default(0)
+  linksLimit  Int      @default(5)
+  clicksCount Int      @default(0)
+  clicksLimit Int      @default(250)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index(userId)
+}

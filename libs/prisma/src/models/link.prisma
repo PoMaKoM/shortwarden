@@ -1,0 +1,19 @@
+model Link {
+  id             String    @id @default(uuid())
+  key            String    @unique // Unique key of the link
+  url            String
+  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  description    String?
+  expirationTime DateTime?
+  createdAt      DateTime  @default(now())
+  clicks         Int       @default(0)
+  visit          Visit[]
+  utm            Json?
+
+  @@index(userId)
+  @@index(key)
+  @@index([url, clicks])
+  @@index(createdAt)
+  @@index(expirationTime)
+}

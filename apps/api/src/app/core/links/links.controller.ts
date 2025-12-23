@@ -1,0 +1,56 @@
+import { Controller, Delete, Get, Param, Query, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { LinksService } from './links.service';
+import { IPaginationResult, calculateSkip } from '../../shared/utils';
+import { FindAllQueryDto } from './dto';
+import { Roles, UserCtx } from '../../shared/decorators';
+import { FastifyReply } from 'fastify';
+import { UserContext } from '../../auth/types/user-context';
+import { AppCacheService } from '../../cache/cache.service';
+import { Role, Link } from '@prisma/client';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Controller({
+  path: 'links',
+  version: '1',
+})
+export class LinksController {
+  constructor(private readonly linksService: LinksService, private readonly cacheService: AppCacheService) {}
+
+  @Get()
+  @Roles(Role.ADMIN, Role.USER)
+  async findAll(@Req() request: FastifyReply, @Query() query: FindAllQueryDto): Promise<IPaginationResult<Link>> {
+    const { page, limit, filter, sort } = query;
+    const user = request.user as UserContext;
+
+    return this.linksService.findAll({
+      ...(page && { skip: calculateSkip(page, limit) }), // if page is defined, then calculate skip
+      limit,
+      filter,
+      sort,
+      // Always add extraWhereClause to the query, so that the user can only see his own links
+      extraWhereClause: {
+        userId: user?.id,
+      },
+    });
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  async delete(@UserCtx() user: UserContext, @Param('id') id: string): Promise<Link> {
+    const link = await this.linksService.findBy({
+      userId: user.id,
+      id,
+    });
+
+    if (!link) {
+      throw new UnauthorizedException();
+    }
+
+    await Promise.all([this.cacheService.del(link.key), this.linksService.delete(id)]);
+
+    return link;
+  }
+}
